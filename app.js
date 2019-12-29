@@ -4,11 +4,27 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var session=require('express-session');
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost:27017/KSS', {useNewUrlParser: true,useUnifiedTopology: true});
+
+var passport=require('passport');
+var flash=require('connect-flash');
+
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var registerRouter=require('./routes/register');
+var testRouter=require('./routes/test');
+var channelRouter=require('./routes/channel');
+var accountRouter=require('./routes/account');
+var loginRouter=require('./routes/login')
 
 var app = express();
+
+require('./db/passport')(passport);
+module.exports=passport;
+
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -20,16 +36,33 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+
 app.use(session({
   secret: 'keyboard cat',
   resave: true,
   saveUninitialized: true,
   cookie: {  }
-}))
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+
+
+
+
+
+
 
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/register', registerRouter);
+app.use('/test',testRouter);
+app.use('/channel',channelRouter);
+app.use('/account',accountRouter);
+app.use('/login',loginRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
