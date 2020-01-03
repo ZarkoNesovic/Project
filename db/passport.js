@@ -21,7 +21,7 @@ module.exports = (passport) => {
       User.findOne({
         email: email
       }).then(user => {
-        console.log(user)
+        //console.log(user)
         if (!user) {
           return done(null, false, { message: 'That email is not registered' });
         }
