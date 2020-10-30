@@ -5,27 +5,28 @@ var db = require('../db/models')
 
 
 /* GET home page. */
-router.get('/', ensureAuthenticated, function (req, res, next) {
-    var channel = db.channel;
-    //console.log(req.user.channels)
-    var channels = req.user.channels
-    var channelNames = []
-    var myChannels;
+router.get('/',ensureAuthenticated, function (req, res, next) {
+  
+  var channel = db.channel;
+  //console.log(req.user.channels)
+  var channels = req.user.channels
+  var channelNames = []
+  var myChannels;
 
-    User.findById(req.user._id).populate('channels').exec((err,data)=>{
-      console.log(data);
-      res.render('account', { title: 'Express' , User:req.user,myChannels:data.channels});
-    })
+  
 
-    
-        
-        
-      });
 
-      //console.log(user)
 
-      //res.render('account', { title: 'Express' , User:req.user,myChannels:channelNames});
-   
+  User.findById(req.user._id).populate('channels').exec((err, data) => {
+    console.log(data.channels);
+    res.render('account', { title: 'Express', User: req.user, myChannels: data.channels });
+  })
+});
+
+
+
+
+
 
 
 

@@ -1,8 +1,6 @@
 Account page
 <%= User %>
 <br>
-
-
 <!doctype html>
 <html lang="en">
 
@@ -12,37 +10,143 @@ Account page
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-
+  <link rel="stylesheet" href=http://localhost:3000/stylesheets/bootstrap.css>
   <title>Hello, world!</title>
-</head>
 
-<body>
-  <a class="btn btn-success btn-lg">Logout</a>
-  <h1>Hello, world!</h1>
-  <div class="container">
-    <h1>My channels</h1>
-    <%= myChannels %>
-
-    
-     <a href="/channel/new" class="btn btn-success btn-lg">Create new channel</a>
-  </div>
-
-
-
-
-  <!-- Optional JavaScript -->
+   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-    crossorigin="anonymous"></script>
+  <script
+  src="https://code.jquery.com/jquery-3.4.1.js"
+  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+  crossorigin="anonymous"></script>
+
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
     integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
     crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-    crossorigin="anonymous"></script>
+  
+<link rel="stylesheet" href=http://localhost:3000/javascripts/bootstrap.min.js>
+
+
+
+
+
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Navbar</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Link</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Dropdown
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="#">Action</a>
+          <a class="dropdown-item" href="#">Another action</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">Something else here</a>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+      </li>
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+  </div>
+</nav>
+
+  <a class="btn btn-success btn-lg" href="/logout">Logout</a>  
+  
+  <div class="container">
+    <h1>My channels</h1>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Channel name</th>
+          <th scope="col">Read api key</th>
+          <th scope="col">Write api key</th>
+          <th scope="col">View channel link</th>     
+          <th scope="col">Delete channel</th>
+          <th scope="col">Delete data</th>     
+        </tr>
+      </thead>
+      <tbody>
+        <% if (myChannels) { %>
+        <tr>
+          <% for(var i=0; i < myChannels.length; i++) { %>
+        <tr>
+          <td><%= myChannels[i].channelName %></td>
+          <td><%= myChannels[i].readApiKey %></td>
+          <td><%= myChannels[i].writeApiKey %></td>
+          <td><a href="/channel/<%= myChannels[i].channelID %>" class="btn btn-success btn-large">View channel</a></td>
+          <td><button  class="btn btn-success btn-large deleteChannel" value="<%= myChannels[i].channelID %>">Delete</button></td>
+          <td><button  class="btn btn-success btn-large deleteChannelData" value="<%= myChannels[i].channelID %>">Delete Data</button></td>
+        </tr>
+        <% } %>
+        <% } %>
+        </tr>
+     </tbody>
+    </table>
+   <a href="/channel/create/new" class="btn btn-success btn-lg">Create new channel</a>
+  </div>
+
+
+ 
 </body>
+
+<script>
+$( ".deleteChannel" ).click(function(e) {
+e.preventDefault();
+  console.log(e.target.value)
+  
+  var url="http://localhost:3000/"+"channel/delete/channel"
+$.ajax({
+  method: "DELETE",
+  url: url,
+  data: { id: e.target.value}
+})
+  .done(function( msg ) {
+    alert( msg );
+  });
+});
+</script>
+
+<script>
+$( ".deleteChannelData" ).click(function(e) {
+e.preventDefault();
+
+  console.log(e.target.value)
+  
+  var url="http://localhost:3000/"+"channel/delete/data"
+$.ajax({
+  method: "DELETE",
+  url: url,
+  data: { id: e.target.value}
+})
+  .done(function( msg ) {
+    alert( msg );
+  });
+});
+
+
+
+</script>
+
+
 
 </html>

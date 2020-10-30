@@ -6,3 +6,9 @@ body {
 a {
   color: #00B7FF;
 }
+.graph{
+  display: block;
+  width: 50%;
+  
+
+}

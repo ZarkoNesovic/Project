@@ -10,6 +10,7 @@ var channelSchema = mongoose.Schema({
 	_id: mongoose.Schema.Types.ObjectId,
 	channelName: { type: String },
 	description: String,
+	channelID:String,
 	readApiKey: String,
 	writeApiKey: String,
 	channelData: [{ type: mongoose.Schema.Types.ObjectId, ref: 'value' }]

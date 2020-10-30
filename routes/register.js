@@ -6,7 +6,8 @@ const mongoose = require('mongoose');
 var db = require('../db/models')
 
 router.get('/', (req, res, next) => {
-  res.render('register');
+  var errorMessage={email:'',username:''}
+  res.render('register',{message:errorMessage});
 
 })
 /* GET home page. */
@@ -14,26 +15,38 @@ router.get('/', (req, res, next) => {
 
 router.post('/', (req, res, next) => {
   //console.log(req.body)
-  
-  newUser = new User({
-    username: req.body.username,
-    password: req.body.password,
-    email: req.body.email
-  });
-  
-    defaultChannel=new channel({
-    _id:new mongoose.Types.ObjectId(), 
-    channelName:'Default',
-     descriptin:'This is default channel generated on registration',
-     readApiKey:short.generate(),
-     writeApiKey:short.generate()
-    })
-    defaultChannel.save();
-    newUser.channels.push(defaultChannel)
-    newUser.save();
-
-
-  res.redirect('/')
+  var User=db.User;
+  User.findOne({email:req.body.email}).then(user=>{
+    var message={};    
+    if(user){
+      if(user.email==req.body.email){
+        message.email='This email already exists';
+      }
+      if(user.email==req.body.email){
+        message.username='This username already exists';
+      }
+      res.render('register', {message:message})
+    }
+    else{
+      newUser = new User({
+        username: req.body.username,
+        password: req.body.password,
+        email: req.body.email
+      });
+        defaultChannel=new channel({
+        _id:new mongoose.Types.ObjectId(), 
+        channelName:'Default',
+         descriptin:'This is default channel generated on registration',
+         channelID:short.generate(),
+         readApiKey:short.generate(),
+         writeApiKey:short.generate()
+        })
+        defaultChannel.save();
+        newUser.channels.push(defaultChannel)
+        newUser.save();
+      res.redirect('/')
+    }
+  }) 
 });
 
 router.get('/test', (req, res, next) => {

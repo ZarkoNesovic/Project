@@ -1,10 +1,12 @@
 module.exports = {
-    ensureAuthenticated: function (req, res, next) {
+    ensureAuthenticated: function (req, res, next) {       
+        console.log(req.isAuthenticated())
         if (req.isAuthenticated()) {
             return next();
+        }        
+        else{
+        res.send('Nedozvoljen pristup');
         }
-        //req.flash('error_msg', 'Please log in to view that resource');
-        res.send('Nedozvoljen pristup')
         //res.redirect('/users/login');
     },
 

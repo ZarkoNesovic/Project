@@ -1,4 +1,380 @@
-Channels page
-<%= User %>
-<br>
-<%= channel.channelData[3] %>
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<link rel='stylesheet' href='/stylesheets/style.css' />
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js" integrity="sha256-4iQZ6BVL4qNKlQ27TExEhBN1HFPvAvAMbFavKKosSWQ=" crossorigin="anonymous"></script>
+  
+ <link rel="stylesheet" href=http://localhost:3000/stylesheets/bootstrap.css>
+  <title>Hello, world!</title>
+
+   <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script
+  src="https://code.jquery.com/jquery-3.4.1.js"
+  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+  crossorigin="anonymous"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  
+<link  href=http://localhost:3000/javascripts/bootstrap.min.js>
+<!-- <link rel="stylesheet" href=http://localhost:3000/stylesheets/bootstrap.min.css> -->
+
+
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js" integrity="sha256-TQq84xX6vkwR0Qs1qH5ADkP+MvH0W+9E7TdHJsoIQiM=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.js" integrity="sha256-8zyeSXm+yTvzUN1VgAOinFgaVFEFTyYzWShOy9w7WoQ=" crossorigin="anonymous"></script>
+
+
+
+
+  <title>Channel</title>
+</head>
+<body> 
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Navbar</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Link</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Dropdown
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="#">Action</a>
+          <a class="dropdown-item" href="#">Another action</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">Something else here</a>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+      </li>
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+  </div>
+</nav>
+  
+  
+  
+  
+  
+  
+  <div>
+  
+  <div class="graph">
+    <canvas id="myChart" class="graph"></canvas>
+  </div>
+  <div class="graph">
+    <canvas id="myChart2"></canvas>
+  </div>
+  <div class="graph">
+    <canvas id="myChart3"></canvas>
+  </div>
+  <div class="graph">
+    <canvas id="myChart4"></canvas>
+  </div>
+  
+  </div>
+  
+  
+  
+  <script>
+
+  </script>
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  
+  
+  <script>
+	var chartOne=[];
+	var chartTwo=[];
+	var chartThree=[];
+	var chartFour=[];
+	var timeFormat = 'MM/DD/YYYY HH:mm';
+    var color = Chart.helpers.color;
+		var config = {
+			type: 'line',
+			data: {
+				datasets: [{
+					label: 'Value',
+					backgroundColor: '#00cc00',
+					borderColor: '#000000',
+					fill: false,
+					data: chartOne,
+				}]
+			},
+			options: {
+				responsive: true,
+				title: {
+					display: true,
+					text: 'VALUE 1'
+				},
+				scales: {
+					xAxes: [{
+						type: 'time',
+						display: true,
+						displayFormats: {
+                        quarter: 'MMM YYYY'
+                    },
+						scaleLabel: {
+							display: true,
+							labelString: 'Date'
+						},
+						ticks: {
+							major: {
+								fontStyle: 'bold',
+								fontColor: '#FF0000'
+							}
+						}
+					}],
+					yAxes: [{
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'value'
+						}
+					}]
+				}
+			}
+		};
+
+		var config2 = {
+			type: 'line',
+			data: {
+				datasets: [{
+					label: 'Value',
+					backgroundColor: '#00cc00',
+					borderColor: '#000000',
+					fill: false,
+					data: chartTwo,
+				}]
+			},
+			options: {
+				responsive: true,
+				title: {
+					display: true,
+					text: 'VALUE 2'
+				},
+				scales: {
+					xAxes: [{
+						type: 'time',
+						display: true,
+						displayFormats: {
+                        quarter: 'MMM YYYY'
+                    },
+						scaleLabel: {
+							display: true,
+							labelString: 'Date'
+						},
+						ticks: {
+							major: {
+								fontStyle: 'bold',
+								fontColor: '#FF0000'
+							}
+						}
+					}],
+					yAxes: [{
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'value'
+						}
+					}]
+				}
+			}
+		};
+
+		var config3 = {
+			type: 'line',
+			data: {
+				datasets: [{
+					label: 'Value',
+					backgroundColor: '#00cc00',
+					borderColor: '#000000',
+					fill: false,
+					data: chartThree,
+				}]
+			},
+			options: {
+				responsive: true,
+				title: {
+					display: true,
+					text: 'VALUE 3'
+				},
+				scales: {
+					xAxes: [{
+						type: 'time',
+						display: true,
+						displayFormats: {
+                        quarter: 'MMM YYYY'
+                    },
+						scaleLabel: {
+							display: true,
+							labelString: 'Date'
+						},
+						ticks: {
+							major: {
+								fontStyle: 'bold',
+								fontColor: '#FF0000'
+							}
+						}
+					}],
+					yAxes: [{
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'value'
+						}
+					}]
+				}
+			}
+		};
+		var config4 = {
+			type: 'line',
+			data: {
+				datasets: [{
+					label: 'Value',
+					backgroundColor: '#00cc00',
+					borderColor: '#000000',
+					fill: false,
+					data: chartFour,
+				}]
+			},
+			options: {
+				responsive: true,
+				title: {
+					display: true,
+					text: 'VALUE 4'
+				},
+				scales: {
+					xAxes: [{
+						type: 'time',
+						display: true,
+						displayFormats: {
+                        quarter: 'MMM YYYY'
+                    },
+						scaleLabel: {
+							display: true,
+							labelString: 'Date'
+						},
+						ticks: {
+							major: {
+								fontStyle: 'bold',
+								fontColor: '#FF0000'
+							}
+						}
+					}],
+					yAxes: [{
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'value'
+						}
+					}]
+				}
+			}
+		};
+		var ctx=document.getElementById('myChart').getContext('2d')
+		chartOneGraph=new Chart(ctx,config)
+		var ctx2=document.getElementById('myChart2').getContext('2d')
+		chartTwoGraph=new Chart(ctx2,config2)
+		var ctx3=document.getElementById('myChart3').getContext('2d')
+		chartThreeGraph=new Chart(ctx3,config3)
+		var ctx4=document.getElementById('myChart4').getContext('2d')
+		chartFourGraph=new Chart(ctx4,config4)
+	
+	var allChartData = <%- JSON.stringify(channel.channelData) %>
+	
+	//console.log(allChartData.length)
+	for(var i=0;i<allChartData.length;i++){
+	if(allChartData[i].fieldValue=='field0'){
+	var coordinate={x:allChartData[i].time,y:allChartData[i].value}
+	chartOne.push(coordinate)		
+	}
+	if(allChartData[i].fieldValue=='field1'){
+	var coordinate={x:allChartData[i].time,y:allChartData[i].value}
+	chartTwo.push(coordinate)		
+	}
+	if(allChartData[i].fieldValue=='field2'){
+	var coordinate={x:allChartData[i].time,y:allChartData[i].value}
+	chartThree.push(coordinate)		
+	}
+	if(allChartData[i].fieldValue=='field3'){
+	var coordinate={x:allChartData[i].time,y:allChartData[i].value}
+	chartFour.push(coordinate)		
+	}
+	}
+	//console.log(chartTwo)
+	chartOneGraph.update()
+	chartTwoGraph.update()
+	chartThreeGraph.update()
+	chartFourGraph.update()
+const socket = io();
+//var Name = '8d6qWCBpMrzkxm59WYZubK';
+var Name = '<%= channel.channelID %>';
+    
+    socket.on(Name, function (data) {
+      //console.log(data)
+	if(data.fieldValue=='field0'){
+		var coordinate={x:data.time,y:data.value}
+		chartOne.push(coordinate)
+		chartOneGraph.update()
+			}
+	if(data.fieldValue=='field1'){
+		var coordinate={x:data.time,y:data.value}
+		chartTwo.push(coordinate)
+			}
+	if(data.fieldValue=='field2'){
+		var coordinate={x:data.time,y:data.value}
+		chartThree.push(coordinate)
+	}
+	if(data.fieldValue=='field3'){
+		var coordinate={x:data.time,y:data.value}
+		chartFour.push(coordinate)
+	}
+	chartOneGraph.update()
+	chartTwoGraph.update()
+	chartThreeGraph.update()
+	chartFourGraph.update()
+	    })
+</script>
+</body>
+</html>
+
+
+
+
+
+		
+	

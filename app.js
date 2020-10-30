@@ -5,7 +5,9 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var session=require('express-session');
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/KSS', {useNewUrlParser: true,useUnifiedTopology: true});
+mongoose.connect('mongodb://localhost:27017/KSS1', {useNewUrlParser: true,useUnifiedTopology: true});
+const MongoStore = require('connect-mongo')(session);
+var bodyParser = require('body-parser')
 
 var passport=require('passport');
 var flash=require('connect-flash');
@@ -22,15 +24,19 @@ var loginRouter=require('./routes/login')
 var app = express();
 
 require('./db/passport')(passport);
-module.exports=passport;
+//module.exports=passport;
 
 
 
 // view engine setup
+app.use(bodyParser.urlencoded({ extended: false }))
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
+var bodyParser = require('body-parser');
+
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -41,19 +47,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
   secret: 'keyboard cat',
   resave: true,
-  saveUninitialized: true,
-  cookie: {  }
+  saveUninitialized: true,    
+  store: new MongoStore({ mongooseConnection: mongoose.connection })
 }));
+
 app.use(passport.initialize());
 app.use(passport.session());
-
-
-
-
-
-
-
-
 
 
 app.use('/', indexRouter);
